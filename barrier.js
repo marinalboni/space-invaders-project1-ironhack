@@ -1,0 +1,3 @@
+class Barrier {
+  constructor(ctx) {}
+}
