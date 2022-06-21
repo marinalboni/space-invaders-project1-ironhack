@@ -9,6 +9,7 @@ class Player {
     this.img.src = "./images/spaceship.png";
     this.vx = 0;
     this.vy = 0;
+    this.strength = 100;
 
     this.setListeners();
 
@@ -26,6 +27,7 @@ class Player {
   draw() {
     this.ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     this.weapon.draw();
+    this.weapon.clearBullets();
   }
 
   move() {
@@ -45,7 +47,11 @@ class Player {
       this.vx = 3;
     } else if (this.actions.left && this.x >= 0) {
       this.vx = -3;
-    } else if (this.actions.up && this.y >= 0) {
+    } else {
+      this.vx = 0;
+    }
+
+    if (this.actions.up && this.y >= 0) {
       this.vy = -3;
     } else if (
       this.actions.down &&
@@ -53,7 +59,6 @@ class Player {
     ) {
       this.vy = 3;
     } else {
-      this.vx = 0;
       this.vy = 0;
     }
 

@@ -2,16 +2,18 @@ class Grid {
   constructor(ctx) {
     this.ctx = ctx;
     this.enemies = [];
-    this.createEnemies();
+    this.columns = 5;
+    this.rows = 10;
     this.x = 700;
-    this.y = 60;
-    this.vy = 0;
+    this.y = 0;
+    this.vy = 3;
+    this.createEnemies();
   }
 
   createEnemies() {
-    for (let i = 0; i < 5; i++) {
-      for (let j = 0; j < 12; j++) {
-        this.enemies.push(new EnemyOne(this.ctx, i, j, 700, 60)); //No coge 'this.x' ni 'this.y', hay que poner numeros enteros
+    for (let i = 0; i < this.columns; i++) {
+      for (let j = 0; j < this.rows; j++) {
+        this.enemies.push(new EnemyOne(this, i, j));
       }
     }
   }
@@ -21,9 +23,18 @@ class Grid {
   }
 
   move() {
-    if (this.height + this.y >= this.ctx.canvas.height || this.x <= 0) {
-      //para poder moverse, necesito que el create enemies utilize this.x y this.y
-      this.x -= 30;
+    this.y += this.vy;
+
+    if (
+      this.enemies.length > 0 &&
+      this.enemies[0].height * this.rows + this.y >= this.ctx.canvas.height
+    ) {
+      this.vy *= -1;
+      this.x -= 15;
+    }
+    if (this.y <= 0) {
+      this.vy *= -1;
+      this.x -= 15;
     }
   }
 }

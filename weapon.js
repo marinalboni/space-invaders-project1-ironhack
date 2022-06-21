@@ -24,12 +24,6 @@ class Weapon {
     }
   }
 
-  clearBullets() {
-    this.bullets = this.bullets.filter((bullet) => {
-      return bullet.isVisible();
-    });
-  }
-
   draw() {
     this.bullets.forEach((bullet) => {
       bullet.draw();
@@ -40,5 +34,9 @@ class Weapon {
     this.bullets.forEach((bullet) => {
       bullet.move();
     });
+  }
+
+  clearBullets() {
+    this.bullets = this.bullets.filter((obs) => obs.isVisible());
   }
 }
