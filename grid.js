@@ -1,19 +1,22 @@
 class Grid {
-  constructor(ctx) {
+  constructor(ctx, level) {
     this.ctx = ctx;
     this.enemies = [];
-    this.columns = 5;
-    this.rows = 10;
+    this.level = level;
+    this.columns = this.level.columns;
+    this.rows = this.level.rows;
     this.x = 700;
     this.y = 0;
-    this.vy = 3;
+    this.vy = this.level.velocity;
     this.createEnemies();
   }
 
   createEnemies() {
     for (let i = 0; i < this.columns; i++) {
       for (let j = 0; j < this.rows; j++) {
-        this.enemies.push(new EnemyOne(this, i, j));
+        this.enemies.push(
+          new Enemy(this, i, j, this.level.img, this.level.strength)
+        );
       }
     }
   }

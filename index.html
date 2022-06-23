@@ -11,11 +11,55 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&family=VT323&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="content">
-        <h1>SPACE INVADERS</h1>
-        <canvas height="600" width="900"></canvas>
-        <div class="elements">
-            <a href="#" id="start-btn">START</a>
+    <div class="flex">
+        <div class="content invisible">
+            <h2 class="title">SPACE INVADERS</h1>
+            <canvas height="600" width="900"></canvas>
+            <div class="elements">
+                <a href="#" id="start-btn">START</a>
+            </div>
+        </div>
+        <div id="inicio" class="">
+            <h2 class="title">WELCOME TO MY <br> <span>SPACE INVADERS</span></h1>
+                <div class="menu-btns">
+                    <button class="menu" id="about-the-game">ABOUT THE GAME</button>
+                    <button class="menu" id="how-to-play">HOW TO PLAY</button>
+                    <button class="menu" id="play-game">PLAY GAME</button>
+                </div>
+        </div>
+        <div id="about" class="invisible">
+            <h2 class="title">ABOUT THE GAME</h1>
+                <p>
+                    This game was developed by Marina Laporte Böni and it is inspired by the original Space Invaders, created by Tomohiro Nishikado in 1978. <br><br>
+                    It was developed as part of my Ironhack Web Development Bootcamp. The technologies used in this game are HTML5, CSS3 and Javascript ES6. All the code was done from scratch. <br><br>
+                    I hope you enjoy playing it as much as I enjoyed working on it. <br>
+                    Feel free to share with your friends :) <br><br>
+                    Marina Laporte Böni - June, 2022.
+                </p>
+                <button class="menu" id="back-to-menu">GO BACK TO MENU</button>
+        </div>
+        <div id="how" class="invisible">
+            <h2 class="title">HOW TO PLAY</h1>
+                <p>IT'S AS EASY AS PIE ;)</p>
+                <div class="flex-row">
+                    <ul>
+                        <li>PRESS W - UP</li>
+                        <li>PRESS A - LEFT</li>
+                        <li>PRESS S - DOWN</li>
+                        <li>PRESS D - RIGHT</li>
+                        <li>PRESS SPACE - SHOOT</li>
+                    </ul>
+                    <img src="./images/wasd.png" alt="wasd keys" id="keys">
+                </div>            
+                <p>BUT WATCH OUT!</p>
+                <ul>
+                    <li>Enemies will shoot as well - try to dodge their bullets.</li>
+                    <li>The satellite will prevent you from shooting as long as you can see it.</li>
+                    <li>Avoid the meteors.</li>
+                    <li>If you see a heart, try to catch it - it will increase your life.</li>
+                    <li>Also try to catch the bullet-like icons - they will improve your weapon.</li>
+                </ul>   
+                <button class="menu" id="back-to-menu2">GO BACK TO MENU</button>
         </div>
     </div>
 
@@ -26,11 +70,7 @@
     <script src="weapon.js"></script>
     <script src="player.js"></script>
     <script src="grid.js"></script>
-    <script src="enemy1.js"></script>
-    <script src="enemy2.js"></script>
-    <script src="enemy3.js"></script>
-    <script src="enemy4.js"></script>
-    <script src="enemy5.js"></script>
+    <script src="enemy.js"></script>
     <script src="particles.js"></script>
     <script src="explosion.js"></script>
     <script src="game.js"></script>

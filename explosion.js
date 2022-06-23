@@ -1,16 +1,17 @@
 class Explosion {
-  constructor(deadEnemy) {
+  constructor(deadEnemy, level) {
     this.ctx = deadEnemy.ctx;
-    this.y =
-      deadEnemy.grid.x + deadEnemy.width * deadEnemy.i + deadEnemy.height / 2;
-    this.x = deadEnemy.grid.x + deadEnemy.width / 2;
+    this.y = deadEnemy.grid.y + deadEnemy.height * deadEnemy.j + 20; //enemy heigth/2
+    this.x = deadEnemy.grid.x + deadEnemy.width * deadEnemy.i + 15; //enemy width/2
     this.particles = [];
+    this.level = level;
+    this.color = this.level.color;
     this.addParticles();
   }
 
   addParticles() {
     for (let i = 0; i < 15; i++) {
-      this.particles.push(new Particle(this.ctx, this.y, this.x));
+      this.particles.push(new Particle(this.ctx, this.y, this.x, this.color));
     }
   }
 
@@ -18,19 +19,15 @@ class Explosion {
     this.particles.forEach((particle) => {
       particle.draw();
     });
-
-    this.move();
-
-    //this.clearBullets();
   }
 
   move() {
-    this.particles.forEach((particle) => {
+    this.particles.forEach((particle, i) => {
       particle.move();
-    });
-  }
 
-  clearParticles() {
-    //this.bullets = this.bullets.filter((obs) => obs.isVisible());
+      if (particle.opacity <= 0) {
+        this.particles.splice(i, 1);
+      }
+    });
   }
 }
