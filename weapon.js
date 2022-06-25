@@ -4,18 +4,34 @@ class Weapon {
     this.isReloading = false;
     this.shooter = shooter;
     this.bullets = [];
+
+    this.sound = new Audio();
+    this.sound.src = "./sounds/shoot.mp3";
   }
 
   shoot() {
     if (!this.isReloading) {
-      this.bullets.push(
-        new Bullet(
-          this.ctx,
-          this.shooter.y + this.shooter.height / 2 - 3,
-          this.shooter.x + this.shooter.width - 5
-        )
-      );
+      this.sound.play();
 
+      if (this.shooter.grid) {
+        this.bullets.push(
+          new Bullet(
+            this.ctx,
+            this.shooter.y + this.shooter.height / 2,
+            this.shooter.x - 30,
+            this.shooter.grid ? -5 : 5
+          )
+        );
+      } else {
+        this.bullets.push(
+          new Bullet(
+            this.ctx,
+            this.shooter.y + this.shooter.height / 2 - 3,
+            this.shooter.x + this.shooter.width - 5,
+            this.shooter.grid ? -5 : 5
+          )
+        );
+      }
       this.isReloading = true;
 
       setTimeout(() => {

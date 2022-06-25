@@ -9,7 +9,7 @@ class Player {
     this.img.src = "./images/spaceship.png";
     this.vx = 0;
     this.vy = 0;
-    this.strength = 100;
+    this.strength = 5;
 
     this.setListeners();
 
@@ -43,7 +43,7 @@ class Player {
   }
 
   applyActions() {
-    if (this.actions.right && this.x <= 200 - this.width) {
+    if (this.actions.right && this.x <= 350 - this.width) {
       this.vx = 3;
     } else if (this.actions.left && this.x >= 0) {
       this.vx = -3;

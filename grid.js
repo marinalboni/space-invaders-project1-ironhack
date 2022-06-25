@@ -9,13 +9,21 @@ class Grid {
     this.y = 0;
     this.vy = this.level.velocity;
     this.createEnemies();
+    this.tick = 0;
   }
 
   createEnemies() {
     for (let i = 0; i < this.columns; i++) {
       for (let j = 0; j < this.rows; j++) {
         this.enemies.push(
-          new Enemy(this, i, j, this.level.img, this.level.strength)
+          new Enemy(
+            this,
+            i,
+            j,
+            this.level.img,
+            this.level.strength,
+            this.level.canShoot
+          )
         );
       }
     }
@@ -23,6 +31,22 @@ class Grid {
 
   draw() {
     this.enemies.forEach((enemy) => enemy.draw());
+
+    this.tick++;
+
+    if (this.level.canShoot) {
+      this.enemies.forEach((enemy, index) => {
+        enemy.weapon.draw();
+        enemy.weapon.move();
+        enemy.weapon.clearBullets();
+        if (index % Math.floor(Math.random() * 10) === 0) {
+          if (this.tick >= 200) {
+            enemy.weapon.shoot();
+            this.tick = 0;
+          }
+        }
+      });
+    }
   }
 
   move() {

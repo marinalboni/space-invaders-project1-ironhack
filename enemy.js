@@ -12,17 +12,24 @@ class Enemy {
     this.img.frameIndex = 0;
     this.tick = 0;
     this.strength = strength;
+    this.canShoot = canShoot;
+    this.x = this.grid.x + this.width * this.i;
+    this.y = this.grid.y + this.height * this.j;
+    this.weapon = new Weapon(this);
   }
 
   draw() {
+    this.x = this.grid.x + this.width * this.i;
+    this.y = this.grid.y + this.height * this.j;
+
     this.ctx.drawImage(
       this.img,
       0,
       (this.img.frameIndex * this.img.height) / this.img.frames,
       this.img.width,
       this.img.height / this.img.frames,
-      this.grid.x + this.width * this.i,
-      this.grid.y + this.height * this.j,
+      this.x,
+      this.y,
       this.width,
       this.height
     );

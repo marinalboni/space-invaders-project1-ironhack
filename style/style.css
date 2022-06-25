@@ -38,7 +38,16 @@ canvas {
 }
 
 .elements {
+    display: flex;
+    justify-content: space-between;
     margin-top: 20px;
+    width: 900px;
+}
+
+.elements p {
+    color: white;
+    font-size: 40px;
+    margin: 0;
 }
 
 #start-btn {
@@ -155,4 +164,8 @@ canvas {
     width: 200px;
     height: 120px;
     margin-left: 50px;
+}
+
+.life {
+    width: 40px;
 }
