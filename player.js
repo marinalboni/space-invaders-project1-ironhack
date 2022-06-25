@@ -43,7 +43,7 @@ class Player {
   }
 
   applyActions() {
-    if (this.actions.right && this.x <= 350 - this.width) {
+    if (this.actions.right && this.x <= 550 - this.width) {
       this.vx = 3;
     } else if (this.actions.left && this.x >= 0) {
       this.vx = -3;

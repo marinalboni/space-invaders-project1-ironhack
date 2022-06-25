@@ -13,7 +13,6 @@
 <body>
     <div class="flex">
         <div class="content invisible">
-            <h2 class="title">SPACE INVADERS</h1>
             <canvas height="600" width="900"></canvas>
             <div class="elements">
                 <a href="#" id="start-btn">START</a>
@@ -64,10 +63,34 @@
                     <li>Enemies will shoot as well - try to dodge their bullets.</li>
                     <li>The satellite will prevent you from shooting as long as you can see it.</li>
                     <li>Avoid the meteors.</li>
-                    <li>If you see a heart, try to catch it - it will increase your life.</li>
-                    <li>Also try to catch the bullet-like icons - they will improve your weapon.</li>
+                    <li>If you see a heart or a bullet icon, try to catch it - they'll help you win.</li>
+                    <li>Don't let enemies reach your space - you don't want to lose.</li>
                 </ul>   
                 <button class="menu" id="back-to-menu2">GO BACK TO MENU</button>
+        </div>
+        <div id="fase" class="invisible">
+            <h2 class="congrats">CONGRATS!</h1>
+            <h3>YOU JUST PASSED LEVEL <span>X</span>!</h3>
+            <h3>You have <span id="points-fase">X</span> points</h3>
+            <h3>& <span id="hearts-fase">X</span> hearts left.</h3>
+            <div class="gifs">
+                <img id="gif" src="./images/alien-gif.gif" alt="alien gif">
+                <img id="gif" src="./images/alien-gif.gif" alt="alien gif">
+                <img id="gif" src="./images/alien-gif.gif" alt="alien gif">
+            </div>
+        </div>
+        <div id="game-over" class="invisible">
+            <h2 class="congrats">GAME OVER - YOU LOST! :(</h1>
+                <div class="div-end">
+                    <div>
+                        <h3>But don't worry, you can try again.</h3>
+                        <button class="menu" id="back-to-menu2" onClick="window.location.reload();">TRY AGAIN</button>
+                    </div>
+                    <div>
+                        <h3>If you liked this game, please share it with your friends:</h3>
+                        <button class="menu" id="share-btn">SHARE!</button>
+                    </div>
+                </div>
         </div>
     </div>
 

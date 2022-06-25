@@ -59,4 +59,12 @@ class Enemy {
 
     return collideX && collideY;
   }
+
+  collideX(el) {
+    const x = this.grid.x + this.width * this.i;
+
+    const collideX = el.x + el.width > x && el.x < x + this.width;
+
+    return collideX;
+  }
 }

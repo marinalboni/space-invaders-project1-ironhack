@@ -8,20 +8,20 @@ class Game {
         img: "./images/enemy1-cropped.png",
         background: "./images/BG1-small.png",
         strength: 10,
-        canShoot: true,
-        velocity: 1.5,
-        columns: 4,
-        rows: 10,
+        canShoot: false,
+        velocity: 15,
+        columns: 1,
+        rows: 2,
         color: "#04fc04",
       },
       {
         img: "./images/enemy2-cropped.png",
         background: "./images/BG2-small.png",
-        strength: 20,
-        canShoot: false,
-        velocity: 2,
-        columns: 2,
-        rows: 2,
+        strength: 10,
+        canShoot: true,
+        velocity: 1,
+        columns: 4,
+        rows: 8,
         color: "#00ccff",
       },
       {
@@ -29,28 +29,28 @@ class Game {
         background: "",
         strength: 20,
         canShoot: true,
-        velocity: 2,
-        columns: 2,
-        rows: 2,
+        velocity: 1.5,
+        columns: 4,
+        rows: 10,
         color: "#ff1cff",
       },
       {
         img: "./images/enemy4-cropped.png",
         background: "",
-        strength: 30,
+        strength: 20,
         canShoot: true,
-        velocity: 2.5,
-        columns: 6,
+        velocity: 2,
+        columns: 5,
         rows: 10,
         color: "#ff6b00",
       },
       {
         img: "./images/enemy5-cropped.png",
         background: "",
-        strength: 40,
+        strength: 30,
         canShoot: true,
-        velocity: 3,
-        columns: 8,
+        velocity: 2,
+        columns: 6,
         rows: 12,
         color: "#ffeb00",
       },
@@ -61,8 +61,12 @@ class Game {
     this.grid = new Grid(this.ctx, this.levels[this.levelIndex]);
     this.barrier = new Barrier(this.ctx);
     this.explosions = [];
-    this.sound1 = new Audio();
-    this.sound1.src = "./sounds/player-bullet.wav";
+    this.deadSound = new Audio();
+    this.deadSound.src = "./sounds/player-bullet.wav";
+    this.menuSound = new Audio();
+    this.menuSound.src = "./sounds/menu-song-jorge-hernandez-chopsticks.mp3";
+    this.lostSound = new Audio();
+    this.lostSound.src = "./sounds/lost-song.wav";
   }
 
   start() {
@@ -99,7 +103,7 @@ class Game {
     const lifesLength = lifes.length;
 
     this.grid.enemies.forEach((enemy, enemyIndex) => {
-      if (enemy.collide(this.player)) {
+      if (enemy.collideX(this.player)) {
         this.gameOver();
       }
 
@@ -136,7 +140,7 @@ class Game {
               pointsDOM.textContent = this.points;
             }
 
-            this.sound1.play();
+            this.deadSound.play();
             this.explosions.push(
               new Explosion(
                 this.grid.enemies[enemyIndex],
@@ -147,13 +151,24 @@ class Game {
             if (!this.grid.enemies.length) {
               this.levelIndex += 1;
 
+              const fase = document.querySelector("#fase");
+              const gameMenu = document.querySelector(".content");
+              const pointsFase = document.getElementById("points-fase");
+              const heartsFase = document.getElementById("hearts-fase");
+              pointsFase.textContent = this.points;
+              heartsFase.textContent = lifes.length;
+              fase.classList.remove("invisible");
+              gameMenu.classList.add("invisible");
+
               setTimeout(() => {
                 this.grid = new Grid(this.ctx, this.levels[this.levelIndex]);
                 this.background = new Background(
                   this.ctx,
                   this.levels[this.levelIndex]
                 );
-              }, 1000);
+                fase.classList.add("invisible");
+                gameMenu.classList.remove("invisible");
+              }, 6000);
             }
           }
           this.player.weapon.bullets.splice(bullIndex, 1);
@@ -162,18 +177,25 @@ class Game {
     });
   }
 
+  playSong() {
+    this.menuSound.play();
+  }
+
   stop() {
     clearInterval(this.intervalId);
     this.intervalId = null;
   }
 
   gameOver() {
+    this.lostSound.play();
     clearInterval(this.intervalId);
     this.intervalId = null;
 
-    this.ctx.font = "230px VT323";
-    this.ctx.fillStyle = "red";
-    this.ctx.textAlign = "center";
-    this.ctx.fillText("GAME OVER", this.ctx.canvas.width / 2, 350);
+    setTimeout(() => {
+      const gameOver = document.getElementById("game-over");
+      gameOver.classList.remove("invisible");
+      const gameMenu = document.querySelector(".content");
+      gameMenu.classList.add("invisible");
+    }, 1000);
   }
 }

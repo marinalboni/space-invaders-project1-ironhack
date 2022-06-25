@@ -6,7 +6,7 @@ class Weapon {
     this.bullets = [];
 
     this.sound = new Audio();
-    this.sound.src = "./sounds/shoot.mp3";
+    this.sound.src = "./sounds/shooting.wav";
   }
 
   shoot() {

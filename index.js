@@ -12,10 +12,16 @@ const playBtn = document.getElementById("play-game");
 const startMenu = document.getElementById("inicio");
 const gameMenu = document.querySelector(".content");
 
+window.onload = () => {
+  game.menuSound.play();
+};
+
 startBtn.addEventListener("click", () => {
   if (game.intervalId === null) {
     game.start();
     startBtn.textContent = "PAUSE";
+    game.menuSound.pause();
+    game.menuSound.currentTime = 0;
   } else {
     game.stop();
     startBtn.textContent = "START";
