@@ -10,6 +10,7 @@ class Grid {
     this.vy = this.level.velocity;
     this.createEnemies();
     this.tick = 0;
+    this.tickMax = level.tickMax;
   }
 
   createEnemies() {
@@ -31,22 +32,6 @@ class Grid {
 
   draw() {
     this.enemies.forEach((enemy) => enemy.draw());
-
-    this.tick++;
-
-    if (this.level.canShoot) {
-      this.enemies.forEach((enemy, index) => {
-        enemy.weapon.draw();
-        enemy.weapon.move();
-        enemy.weapon.clearBullets();
-        if (index % Math.floor(Math.random() * 10) === 0) {
-          if (this.tick >= 200) {
-            enemy.weapon.shoot();
-            this.tick = 0;
-          }
-        }
-      });
-    }
   }
 
   move() {
@@ -62,6 +47,26 @@ class Grid {
     if (this.y <= 0) {
       this.vy *= -1;
       this.x -= 15;
+    }
+  }
+
+  shoot() {
+    this.tick++;
+    this.enemies.forEach((enemy) => {
+      enemy.weapon.draw();
+      enemy.weapon.move();
+      enemy.weapon.clearBullets();
+    });
+
+    if (this.tick >= this.tickMax) {
+      if (this.level.canShoot) {
+        this.enemies.forEach((enemy, index) => {
+          if (index === Math.floor(Math.random() * this.enemies.length)) {
+            enemy.weapon.shoot();
+          }
+        });
+      }
+      this.tick = 0;
     }
   }
 }

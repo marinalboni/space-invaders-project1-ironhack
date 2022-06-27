@@ -15,7 +15,7 @@
         <div class="content invisible">
             <canvas height="600" width="900"></canvas>
             <div class="elements">
-                <a href="#" id="start-btn">START</a>
+                <a href="#" id="start-btn">PLAY</a>
                 <div id="hearts">
                     <img class="life visibility" src="/images/life.png" alt="life">
                     <img class ="life visibility" src="/images/life.png" alt="life">
@@ -26,8 +26,8 @@
                 <p>POINTS: <span id="points">0</span></p>
             </div>
         </div>
-        <div id="inicio" class="">
-            <h2 class="title">WELCOME TO MY <br> <span>SPACE INVADERS</span></h1>
+        <div id="inicio" class="invisible">
+            <h2 class="title"><span>SPACE INVADERS</span></h1>
                 <div class="menu-btns">
                     <button class="menu" id="about-the-game">ABOUT THE GAME</button>
                     <button class="menu" id="how-to-play">HOW TO PLAY</button>
@@ -92,11 +92,17 @@
                     </div>
                 </div>
         </div>
+        <div id="start-song" class="">
+            <h2 class="title">WELCOME TO MY <br><span>SPACE INVADERS</span></h1>
+            <button class="menu" id="play-music">I WANT TO PLAY!</button>
+        </div>
     </div>
 
     <script src="background.js"></script>
+    <script src="songs.js"></script>
     <script src="constants.js"></script>
-    <script src="barrier.js"></script>
+    <script src="meteor.js"></script>
+    <script src="bonus.js"></script>
     <script src="bullet.js"></script>
     <script src="weapon.js"></script>
     <script src="player.js"></script>

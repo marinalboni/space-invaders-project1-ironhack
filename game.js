@@ -9,8 +9,8 @@ class Game {
         background: "./images/BG1-small.png",
         strength: 10,
         canShoot: false,
-        velocity: 15,
-        columns: 1,
+        velocity: 1,
+        columns: 2,
         rows: 2,
         color: "#04fc04",
       },
@@ -23,6 +23,7 @@ class Game {
         columns: 4,
         rows: 8,
         color: "#00ccff",
+        tickMax: 225,
       },
       {
         img: "./images/enemy3-cropped.png",
@@ -33,6 +34,7 @@ class Game {
         columns: 4,
         rows: 10,
         color: "#ff1cff",
+        tickMax: 200,
       },
       {
         img: "./images/enemy4-cropped.png",
@@ -43,30 +45,42 @@ class Game {
         columns: 5,
         rows: 10,
         color: "#ff6b00",
+        tickMax: 175,
       },
       {
         img: "./images/enemy5-cropped.png",
         background: "",
-        strength: 30,
+        strength: 20,
         canShoot: true,
         velocity: 2,
         columns: 6,
-        rows: 12,
+        rows: 10,
         color: "#ffeb00",
+        tickMax: 150,
       },
     ];
     this.intervalId = null;
     this.background = new Background(this.ctx, this.levels[this.levelIndex]);
     this.player = new Player(this.ctx);
     this.grid = new Grid(this.ctx, this.levels[this.levelIndex]);
-    this.barrier = new Barrier(this.ctx);
     this.explosions = [];
+    this.meteors = [];
+    this.bonusArr = [];
+    this.tickMeteor = 0;
+    this.tickBonus = 0;
     this.deadSound = new Audio();
     this.deadSound.src = "./sounds/player-bullet.wav";
     this.menuSound = new Audio();
     this.menuSound.src = "./sounds/menu-song-jorge-hernandez-chopsticks.mp3";
     this.lostSound = new Audio();
     this.lostSound.src = "./sounds/lost-song.wav";
+    this.gameSound = new Audio();
+    this.gameSound.src = "./sounds/fase-2.wav";
+    this.winSound = new Audio();
+    this.winSound.src = "./sounds/win.wav";
+    this.hoverSound = new Audio();
+    this.hoverSound.src = "./sounds/hover.wav";
+    this.song = new Song(this.levelIndex);
   }
 
   start() {
@@ -75,7 +89,24 @@ class Game {
       this.draw();
       this.checkCollisions();
       this.move();
+
+      let randomTickM = Math.floor(Math.random() * 200) + 500;
+      this.tickMeteor++;
+      if (this.tickMeteor >= randomTickM) {
+        this.tickMeteor = 0;
+        this.addMeteor();
+        this.meteors = this.meteors.filter((meteor) => meteor.isVisible());
+      }
+
+      let randomTickB = Math.floor(Math.random() * 1000) + 2500;
+      this.tickBonus++;
+      if (this.tickBonus >= randomTickB) {
+        this.tickBonus = 0;
+        this.addBonus();
+        this.bonusArr = this.bonusArr.filter((bonus) => bonus.isVisible());
+      }
     }, 1000 / 60);
+    this.song.play();
   }
 
   draw() {
@@ -83,24 +114,54 @@ class Game {
     this.player.draw();
     this.grid.draw();
     this.explosions.forEach((explosion) => explosion.draw());
+    this.meteors.forEach((meteor) => meteor.draw());
+    this.bonusArr.forEach((bonus) => bonus.draw());
   }
 
   clear() {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-
-    // this.explosions.forEach((explosion, i) => LIMPAR O ARRAY DE EXPLOSIONES
-    // )
   }
 
   move() {
     this.player.move();
     this.grid.move();
     this.explosions.forEach((explosion) => explosion.move());
+    this.grid.shoot();
+    this.meteors.forEach((meteor) => meteor.move());
+    this.bonusArr.forEach((bonus) => bonus.move());
+  }
+
+  addMeteor() {
+    this.meteors.push(new Meteor(this.ctx));
+  }
+
+  addBonus() {
+    this.bonusArr.push(new Bonus(this.ctx));
   }
 
   checkCollisions() {
     const lifes = document.querySelectorAll(".life");
     const lifesLength = lifes.length;
+    const lifesFather = document.getElementById("hearts");
+    const newHeart = document.createElement("img");
+    newHeart.classList.add("life");
+    newHeart.src = "./images/life.png";
+    newHeart.alt = "life";
+
+    this.bonusArr.forEach((bonus, bonusIndex) => {
+      if (bonus.collide(this.player) && this.player.strength < 5) {
+        this.player.strength += 1;
+        this.bonusArr.splice(bonusIndex, 1);
+        lifesFather.appendChild(newHeart);
+      }
+    });
+
+    this.meteors.forEach((meteor, metIndex) => {
+      if (meteor.collide(this.player)) {
+        this.meteors.splice(metIndex, 1);
+        this.gameOver();
+      }
+    });
 
     this.grid.enemies.forEach((enemy, enemyIndex) => {
       if (enemy.collideX(this.player)) {
@@ -157,17 +218,26 @@ class Game {
               const heartsFase = document.getElementById("hearts-fase");
               pointsFase.textContent = this.points;
               heartsFase.textContent = lifes.length;
-              fase.classList.remove("invisible");
-              gameMenu.classList.add("invisible");
 
               setTimeout(() => {
-                this.grid = new Grid(this.ctx, this.levels[this.levelIndex]);
+                this.stop();
+                this.meteors = [];
+                this.player.weapon.bullets = [];
+                fase.classList.remove("invisible");
+                gameMenu.classList.add("invisible");
+                this.winSound.play();
+              }, 1000);
+
+              setTimeout(() => {
                 this.background = new Background(
                   this.ctx,
                   this.levels[this.levelIndex]
                 );
+                this.grid = new Grid(this.ctx, this.levels[this.levelIndex]);
+                this.song = new Song(this.levelIndex);
                 fase.classList.add("invisible");
                 gameMenu.classList.remove("invisible");
+                this.start();
               }, 6000);
             }
           }
@@ -177,16 +247,17 @@ class Game {
     });
   }
 
-  playSong() {
-    this.menuSound.play();
-  }
-
   stop() {
     clearInterval(this.intervalId);
     this.intervalId = null;
+    this.song.pause();
+    this.song.currentTime = 0;
   }
 
   gameOver() {
+    this.song.pause();
+    this.song.currentTime = 0;
+
     this.lostSound.play();
     clearInterval(this.intervalId);
     this.intervalId = null;

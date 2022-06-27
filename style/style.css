@@ -33,6 +33,11 @@ body {
     font-size: 140px
 }
 
+#start-song {
+    text-align: center;
+    margin-top: -700px;
+}
+
 canvas {
     margin-top: 100px;
     border: 5px solid white;
@@ -190,17 +195,15 @@ canvas {
 }
 
 h3 {
-    font-size: 40px;
+    font-size: 50px;
     margin: 15px auto;
     color: #ffffff;
-    text-shadow: 15px 3px 25px #39FF14;
 }
 
 .congrats {
     color: #39FF14;
     font-size: 100px;
     margin: 30px auto 30px;
-    text-shadow: 15px 3px 25px #39FF14;
 }
 
 #game-over {
