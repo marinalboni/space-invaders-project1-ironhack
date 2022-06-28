@@ -70,7 +70,7 @@
         </div>
         <div id="fase" class="invisible">
             <h2 class="congrats">CONGRATS!</h1>
-            <h3>YOU JUST PASSED LEVEL <span>X</span>!</h3>
+            <h3>YOU JUST PASSED LEVEL <span id="level-fase">X</span>!</h3>
             <h3>You have <span id="points-fase">X</span> points</h3>
             <h3>& <span id="hearts-fase">X</span> hearts left.</h3>
             <div class="gifs">
@@ -80,17 +80,18 @@
             </div>
         </div>
         <div id="game-over" class="invisible">
-            <h2 class="congrats">GAME OVER - YOU LOST! :(</h1>
-                <div class="div-end">
-                    <div>
-                        <h3>But don't worry, you can try again.</h3>
-                        <button class="menu" id="back-to-menu2" onClick="window.location.reload();">TRY AGAIN</button>
-                    </div>
-                    <div>
-                        <h3>If you liked this game, please share it with your friends:</h3>
-                        <button class="menu" id="share-btn">SHARE!</button>
-                    </div>
+            <h2 class="congrats">GAME OVER - YOU LOST! :(</h1>ç
+            <h3>You made <span id="points-game-over">x</span> points.</h3>
+            <div class="div-end">
+                <div>
+                    <h3>But don't worry, you can try again.</h3>
+                    <button class="menu" id="back-to-menu2" onClick="window.location.reload();">TRY AGAIN</button>
                 </div>
+                <div>
+                    <h3>If you liked this game, please share it with your friends:</h3>
+                    <button class="menu" id="share-btn">SHARE!</button>
+                </div>
+            </div>
         </div>
         <div id="start-song" class="">
             <h2 class="title">WELCOME TO MY <br><span>SPACE INVADERS</span></h1>
@@ -102,12 +103,14 @@
     <script src="songs.js"></script>
     <script src="constants.js"></script>
     <script src="meteor.js"></script>
+    <script src="bulletbonus.js"></script>
     <script src="bonus.js"></script>
     <script src="bullet.js"></script>
     <script src="weapon.js"></script>
     <script src="player.js"></script>
     <script src="grid.js"></script>
     <script src="enemy.js"></script>
+    <script src="boss1.js"></script>
     <script src="particles.js"></script>
     <script src="explosion.js"></script>
     <script src="game.js"></script>

@@ -1,12 +1,13 @@
 class Weapon {
-  constructor(shooter) {
+  constructor(shooter, enemy) {
     this.ctx = shooter.ctx;
     this.isReloading = false;
     this.shooter = shooter;
     this.bullets = [];
-
+    this.isSpecialBullet = false;
     this.sound = new Audio();
     this.sound.src = "./sounds/shooting.wav";
+    this.enemy = enemy;
   }
 
   shoot() {
@@ -19,18 +20,71 @@ class Weapon {
             this.ctx,
             this.shooter.y + this.shooter.height / 2,
             this.shooter.x - 30,
-            this.shooter.grid ? -5 : 5
+            this.shooter.grid ? -5 : 5,
+            0,
+            "./images/enemy-bullet.png",
+            25,
+            15
           )
         );
-      } else {
+      } else if (this.shooter.isBoss) {
         this.bullets.push(
           new Bullet(
             this.ctx,
-            this.shooter.y + this.shooter.height / 2 - 3,
-            this.shooter.x + this.shooter.width - 5,
-            this.shooter.grid ? -5 : 5
+            this.shooter.y + this.shooter.height / 2,
+            this.shooter.x - 10,
+            -5,
+            Math.random() < 0.5 ? -4 : 4,
+            "./images/bala-chefao1.png",
+            40,
+            40,
+            7,
+            true
           )
         );
+      } else {
+        if (!this.isSpecialBullet) {
+          this.bullets.push(
+            new Bullet(
+              this.ctx,
+              this.shooter.y + this.shooter.height / 2 - 3,
+              this.shooter.x + this.shooter.width - 5
+            )
+          );
+        } else {
+          this.bullets.push(
+            new Bullet(
+              this.ctx,
+              this.shooter.y + this.shooter.height / 2 - 3,
+              this.shooter.x + this.shooter.width - 5,
+              7,
+              0.5,
+              "./images/triple-bullet.png",
+              15,
+              15
+            ),
+            new Bullet(
+              this.ctx,
+              this.shooter.y + this.shooter.height / 2 - 3,
+              this.shooter.x + this.shooter.width - 5,
+              7,
+              0,
+              "./images/triple-bullet.png",
+              15,
+              15
+            ),
+            new Bullet(
+              this.ctx,
+              this.shooter.y + this.shooter.height / 2 - 3,
+              this.shooter.x + this.shooter.width - 5,
+              7,
+              -0.5,
+              "./images/triple-bullet.png",
+              15,
+              15
+            )
+          );
+        }
       }
       this.isReloading = true;
 

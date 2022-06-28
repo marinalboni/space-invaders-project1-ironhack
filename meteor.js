@@ -4,7 +4,7 @@ class Meteor {
     this.width = 130;
     this.height = 50;
     this.x = this.ctx.canvas.width;
-    this.y = Math.random() * this.ctx.canvas.height - this.height;
+    this.y = Math.random() * (this.ctx.canvas.height - this.height);
     this.img = new Image();
     this.img.src = "./images/meteor.png";
     this.img.frames = 8;
