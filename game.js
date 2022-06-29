@@ -20,8 +20,8 @@ class Game {
         strength: 10,
         canShoot: true,
         velocity: 1,
-        columns: 2,
-        rows: 10,
+        columns: 1,
+        rows: 1,
         color: "#00ccff",
         tickMax: 225,
       },
@@ -31,8 +31,8 @@ class Game {
         strength: 20,
         canShoot: true,
         velocity: 1.5,
-        columns: 2,
-        rows: 10,
+        columns: 1,
+        rows: 1,
         color: "#ff1cff",
         tickMax: 200,
       },
@@ -42,8 +42,8 @@ class Game {
         strength: 20,
         canShoot: true,
         velocity: 2,
-        columns: 2,
-        rows: 10,
+        columns: 1,
+        rows: 1,
         color: "#ff6b00",
         tickMax: 175,
       },
@@ -67,7 +67,6 @@ class Game {
     this.meteors = [];
     this.bonusArr = [];
     this.bulletBonusArr = [];
-    this.bosses = [];
     this.tickMeteor = 0;
     this.tickBonus = 0;
     this.tickBulletBonus = 1250;
@@ -86,7 +85,7 @@ class Game {
     this.damageSound = new Audio();
     this.damageSound.src = "./sounds/damage.wav";
     this.song = new Song(this.levelIndex);
-    this.boss1 = new Boss1(this.ctx);
+    this.boss1 = null;
   }
 
   start() {
@@ -146,6 +145,12 @@ class Game {
     this.meteors.forEach((meteor) => meteor.move());
     this.bonusArr.forEach((bonus) => bonus.move());
     this.bulletBonusArr.forEach((bullBonus) => bullBonus.move());
+
+    if (this.boss1) {
+      this.boss1.move();
+      this.boss1.draw();
+      this.boss1.shoot();
+    }
   }
 
   addMeteor() {
@@ -249,20 +254,44 @@ class Game {
               )
             );
             this.grid.enemies.splice(enemyIndex, 1);
-            if (!this.grid.enemies.length) {
-              this.levelIndex += 1;
 
-              //DIVS PARA MUDAR DE FASE
-              const fase = document.querySelector("#fase");
-              const level = document.getElementById("level-fase");
-              const gameMenu = document.querySelector(".content");
-              const pointsFase = document.getElementById("points-fase");
-              const heartsFase = document.getElementById("hearts-fase");
-              pointsFase.textContent = this.points;
-              heartsFase.textContent = lifes.length;
-              level.textContent = this.levelIndex;
+            //DIVS PARA MUDAR DE FASE
+            if (this.levelIndex < 4) {
+              if (!this.grid.enemies.length) {
+                this.levelIndex += 1;
+                const fase = document.querySelector("#fase");
+                const level = document.getElementById("level-fase");
+                const gameMenu = document.querySelector(".content");
+                const pointsFase = document.getElementById("points-fase");
+                const heartsFase = document.getElementById("hearts-fase");
+                pointsFase.textContent = this.points;
+                heartsFase.textContent = lifes.length;
+                level.textContent = this.levelIndex;
 
-              //LIMPA A TELA E TOCA O SOM DA VITÓRIA
+                //LIMPA A TELA E TOCA O SOM DA VITÓRIA
+                setTimeout(() => {
+                  this.stop();
+                  this.meteors = [];
+                  this.player.weapon.bullets = [];
+                  fase.classList.remove("invisible");
+                  gameMenu.classList.add("invisible");
+                  this.winSound.play();
+                }, 1000);
+
+                //ADICIONA NOVO GRID DE INIMIGOS
+                setTimeout(() => {
+                  this.background = new Background(
+                    this.ctx,
+                    this.levels[this.levelIndex]
+                  );
+                  this.grid = new Grid(this.ctx, this.levels[this.levelIndex]);
+                  this.song = new Song(this.levelIndex);
+                  fase.classList.add("invisible");
+                  gameMenu.classList.remove("invisible");
+                  this.start();
+                }, 6000);
+              }
+            } else {
               setTimeout(() => {
                 this.stop();
                 this.meteors = [];
@@ -272,52 +301,54 @@ class Game {
                 this.winSound.play();
               }, 1000);
 
-              //ADICIONA NOVO GRID DE INIMIGOS
+              //ADICIONA CHEFAO
               setTimeout(() => {
                 this.background = new Background(
                   this.ctx,
                   this.levels[this.levelIndex]
                 );
-                this.grid = new Grid(this.ctx, this.levels[this.levelIndex]);
+                this.boss1 = new Boss1(this.ctx);
                 this.song = new Song(this.levelIndex);
                 fase.classList.add("invisible");
                 gameMenu.classList.remove("invisible");
                 this.start();
               }, 6000);
             }
+            this.player.weapon.bullets.splice(bullIndex, 1);
           }
-          this.player.weapon.bullets.splice(bullIndex, 1);
         }
       });
     });
 
     //COLISÃO BALAS CHEFÃO 1 + PLAYER
-    this.boss1.weapon.bullets.forEach((bull, bullIndex) => {
-      if (bull.collide(this.player)) {
-        this.damageSound.play();
-        lifes[lifesLength - 1].remove();
-        this.player.strength -= 1;
-        this.boss1.weapon.bullets.splice(bullIndex, 1);
-        if (this.player.strength <= 0) {
-          this.gameOver();
+    if (this.boss1) {
+      this.boss1.weapon.bullets.forEach((bull, bullIndex) => {
+        if (bull.collide(this.player)) {
+          this.damageSound.play();
+          lifes[lifesLength - 1].remove();
+          this.player.strength -= 1;
+          this.boss1.weapon.bullets.splice(bullIndex, 1);
+          if (this.player.strength <= 0) {
+            this.gameOver();
+          }
         }
-      }
-    });
+      });
 
-    //COLISÃO BALAS PLAYER + CHEFÃO 1
-    this.player.weapon.bullets.forEach((bull, bullIndex) => {
-      const pointsDOM = document.getElementById("points");
-      if (this.boss1.collide(bull)) {
-        this.player.weapon.bullets.splice(bullIndex, 1);
-        this.boss1.strength -= 10;
-        console.log(this.boss1.strength);
-        if (this.boss1.strength <= 0) {
-          this.points += 150;
-          pointsDOM.textContent = this.points;
-          //MATAR O CHEFÃO
+      //COLISÃO BALAS PLAYER + CHEFÃO 1
+      this.player.weapon.bullets.forEach((bull, bullIndex) => {
+        const pointsDOM = document.getElementById("points");
+        if (this.boss1.collide(bull)) {
+          this.player.weapon.bullets.splice(bullIndex, 1);
+          this.boss1.strength -= 10;
+          if (this.boss1.strength <= 0) {
+            this.points += 150;
+            pointsDOM.textContent = this.points;
+            this.boss1 = null;
+            this.stop();
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   stop() {

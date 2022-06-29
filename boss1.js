@@ -12,8 +12,8 @@ class Boss1 {
     this.tick = 0;
     this.shootingTick = 0;
     this.tickMax = Math.floor(Math.random() * 100) + 50;
-    this.vx = 4;
-    this.vy = 4;
+    this.vx = 2;
+    this.vy = 2;
     this.strength = 100;
     this.isBoss = true;
 

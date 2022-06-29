@@ -10,11 +10,7 @@ class Song {
   }
 
   play() {
-    if (
-      this.levelIndex === 0 ||
-      this.levelIndex === 2 ||
-      this.levelIndex === 4
-    ) {
+    if (this.levelIndex % 2 === 0) {
       this.song1.play();
     } else if (this.levelIndex === 1 || this.levelIndex === 3) {
       this.song2.play();
