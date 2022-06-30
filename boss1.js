@@ -1,20 +1,20 @@
 class Boss1 {
   constructor(ctx) {
     this.ctx = ctx;
-    this.width = 160;
-    this.height = 160;
+    this.width = 207;
+    this.height = 177;
     this.x = 600;
     this.y = this.ctx.canvas.height / 2 - this.height / 2;
     this.img = new Image();
-    this.img.src = "./images/chefao1.png";
-    this.img.frames = 8;
+    this.img.src = "./images/chefao2.png";
+    this.img.frames = 9;
     this.img.frameIndex = 0;
     this.tick = 0;
     this.shootingTick = 0;
     this.tickMax = Math.floor(Math.random() * 100) + 50;
-    this.vx = 2;
-    this.vy = 2;
-    this.strength = 100;
+    this.vx = 3;
+    this.vy = 3;
+    this.strength = 350;
     this.isBoss = true;
 
     this.weapon = new Weapon(this);
@@ -57,7 +57,7 @@ class Boss1 {
   animate() {
     this.tick++;
 
-    if (this.tick > 3) {
+    if (this.tick > 5) {
       this.tick = 0;
       this.img.frameIndex++;
     }

@@ -3,42 +3,31 @@ class Background {
     this.ctx = ctx;
     this.x = 0;
     this.y = 0;
-    this.width = this.ctx.canvas.width;
-    this.height = this.ctx.canvas.height;
+    this.vx = -0.8;
     this.level = level;
     this.img = new Image();
-    this.img.src = this.level.background;
-    this.img.frames = 10;
-    this.img.frameIndex = 0;
-    this.tick = 0;
+    this.img.src = this.level ? this.level.background : "./images/bg6.png";
+    this.width = this.ctx.canvas.width * 2;
+    this.height = this.ctx.canvas.height;
   }
 
   draw() {
+    this.ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     this.ctx.drawImage(
       this.img,
-      (this.img.frameIndex * this.img.width) / this.img.frames,
-      0,
-      this.img.width / this.img.frames,
-      this.img.height,
-      this.x,
+      this.x + this.width,
       this.y,
       this.width,
       this.height
     );
 
-    this.animate();
+    this.move();
   }
 
-  animate() {
-    this.tick++;
-
-    if (this.tick > 20) {
-      this.tick = 0;
-      this.img.frameIndex++;
-    }
-
-    if (this.img.frameIndex >= this.img.frames) {
-      this.img.frameIndex = 0;
+  move() {
+    this.x += this.vx;
+    if (this.x + this.width <= 0) {
+      this.x = 0;
     }
   }
 }

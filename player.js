@@ -25,9 +25,11 @@ class Player {
   }
 
   draw() {
-    this.ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-    this.weapon.draw();
-    this.weapon.clearBullets();
+    if (this.strength > 0) {
+      this.ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+      this.weapon.draw();
+      this.weapon.clearBullets();
+    }
   }
 
   move() {
@@ -43,7 +45,7 @@ class Player {
   }
 
   applyActions() {
-    if (this.actions.right && this.x <= 550 - this.width) {
+    if (this.actions.right && this.x <= 450 - this.width) {
       this.vx = 3;
     } else if (this.actions.left && this.x >= 0) {
       this.vx = -3;

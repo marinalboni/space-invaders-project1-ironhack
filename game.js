@@ -6,57 +6,57 @@ class Game {
     this.levels = [
       {
         img: "./images/enemy1-cropped.png",
-        background: "./images/BG1-small.png",
+        background: "./images/bg1.png",
         strength: 10,
         canShoot: false,
-        velocity: 1,
-        columns: 1,
-        rows: 1,
+        velocity: 3,
+        columns: 10,
+        rows: 10,
         color: "#04fc04",
       },
       {
         img: "./images/enemy2-cropped.png",
-        background: "./images/BG2-small.png",
+        background: "./images/bg2.png",
         strength: 10,
         canShoot: true,
-        velocity: 1,
-        columns: 1,
-        rows: 1,
+        velocity: 3,
+        columns: 8,
+        rows: 10,
         color: "#00ccff",
-        tickMax: 225,
+        tickMax: 150,
       },
       {
         img: "./images/enemy3-cropped.png",
-        background: "",
+        background: "./images/bg3.png",
         strength: 20,
         canShoot: true,
-        velocity: 1.5,
-        columns: 1,
-        rows: 1,
+        velocity: 2,
+        columns: 8,
+        rows: 10,
         color: "#ff1cff",
-        tickMax: 200,
+        tickMax: 125,
       },
       {
         img: "./images/enemy4-cropped.png",
-        background: "",
+        background: "./images/bg4.png",
         strength: 20,
         canShoot: true,
-        velocity: 2,
-        columns: 1,
-        rows: 1,
+        velocity: 1.5,
+        columns: 6,
+        rows: 10,
         color: "#ff6b00",
-        tickMax: 175,
+        tickMax: 100,
       },
       {
         img: "./images/enemy5-cropped.png",
-        background: "",
+        background: "./images/bg5.png",
         strength: 20,
         canShoot: true,
-        velocity: 2,
-        columns: 1,
-        rows: 1,
-        color: "#ff6b00",
-        tickMax: 175,
+        velocity: 1.5,
+        columns: 10,
+        rows: 10,
+        color: "yellow",
+        tickMax: 75,
       },
     ];
     this.intervalId = null;
@@ -84,8 +84,13 @@ class Game {
     this.hoverSound.src = "./sounds/hover.wav";
     this.damageSound = new Audio();
     this.damageSound.src = "./sounds/damage.wav";
+    this.explosionSound = new Audio();
+    this.explosionSound.src = "./sounds/explosion.wav";
+    this.winningSong = new Audio();
+    this.winningSong.src = "./sounds/final-song.mp3";
     this.song = new Song(this.levelIndex);
     this.boss1 = null;
+    this.explode = null;
   }
 
   start() {
@@ -97,7 +102,7 @@ class Game {
 
       let randomTickM = Math.floor(Math.random() * 200) + 500;
       this.tickMeteor++;
-      if (this.tickMeteor >= randomTickM) {
+      if (this.tickMeteor >= randomTickM && !this.boss1 && !this.explode) {
         this.tickMeteor = 0;
         this.addMeteor();
         this.meteors = this.meteors.filter((meteor) => meteor.isVisible());
@@ -125,12 +130,20 @@ class Game {
 
   draw() {
     this.background.draw();
-    this.player.draw();
     this.grid.draw();
     this.explosions.forEach((explosion) => explosion.draw());
     this.meteors.forEach((meteor) => meteor.draw());
     this.bonusArr.forEach((bonus) => bonus.draw());
     this.bulletBonusArr.forEach((bullBonus) => bullBonus.draw());
+    this.player.draw();
+
+    if (this.boss1) {
+      this.boss1.draw();
+    }
+
+    if (this.explode) {
+      this.explode.draw();
+    }
   }
 
   clear() {
@@ -146,9 +159,8 @@ class Game {
     this.bonusArr.forEach((bonus) => bonus.move());
     this.bulletBonusArr.forEach((bullBonus) => bullBonus.move());
 
-    if (this.boss1) {
+    if (this.boss1 && !this.explode) {
       this.boss1.move();
-      this.boss1.draw();
       this.boss1.shoot();
     }
   }
@@ -198,15 +210,27 @@ class Game {
     //METEORO + PLAYER
     this.meteors.forEach((meteor, metIndex) => {
       if (meteor.collide(this.player)) {
+        this.player.strength = 0;
+        lifes.forEach((life) => life.remove());
         this.meteors.splice(metIndex, 1);
-        this.gameOver();
+        this.explode = new Explode(this.player);
+        this.explosionSound.play();
+        setTimeout(() => {
+          this.gameOver();
+        }, 5000);
       }
     });
 
     //GRID INIMIGOS + PLAYER
     this.grid.enemies.forEach((enemy, enemyIndex) => {
       if (enemy.collideX(this.player)) {
-        this.gameOver();
+        this.player.strength = 0;
+        this.grid.enemies = [];
+        this.explode = new Explode(this.player);
+        this.explosionSound.play();
+        setTimeout(() => {
+          this.gameOver();
+        }, 5000);
       }
 
       //GRID INIMIGOS (BALA INIMIGOS + PLAYER)
@@ -217,14 +241,21 @@ class Game {
           this.player.strength -= 1;
           enemy.weapon.bullets.splice(bullIndex, 1);
           if (this.player.strength <= 0) {
-            this.gameOver();
+            this.song.pause();
+            this.song.currentTime = 0;
+            this.explode = new Explode(this.player);
+            this.explosionSound.play();
+            setTimeout(() => {
+              this.gameOver();
+            }, 5000);
           }
         }
       });
 
-      //BALA + INIMIGO - ADICIONAR PONTOS
+      //BALA PLAYER + INIMIGO - ADICIONAR PONTOS
       this.player.weapon.bullets.forEach((bull, bullIndex) => {
         if (enemy.collide(bull)) {
+          this.player.weapon.bullets.splice(bullIndex, 1);
           this.grid.enemies[enemyIndex].strength -= 10;
           if (this.grid.enemies[enemyIndex].strength <= 0) {
             const pointsDOM = document.getElementById("points");
@@ -292,29 +323,29 @@ class Game {
                 }, 6000);
               }
             } else {
-              setTimeout(() => {
-                this.stop();
-                this.meteors = [];
-                this.player.weapon.bullets = [];
-                fase.classList.remove("invisible");
-                gameMenu.classList.add("invisible");
-                this.winSound.play();
-              }, 1000);
+              if (!this.grid.enemies.length) {
+                const chefao = document.querySelector("#chefao");
 
-              //ADICIONA CHEFAO
-              setTimeout(() => {
-                this.background = new Background(
-                  this.ctx,
-                  this.levels[this.levelIndex]
-                );
-                this.boss1 = new Boss1(this.ctx);
-                this.song = new Song(this.levelIndex);
-                fase.classList.add("invisible");
-                gameMenu.classList.remove("invisible");
-                this.start();
-              }, 6000);
+                setTimeout(() => {
+                  this.stop();
+                  this.meteors = [];
+                  this.player.weapon.bullets = [];
+                  chefao.classList.remove("invisible");
+                  gameMenu.classList.add("invisible");
+                  this.winSound.play();
+                }, 1000);
+
+                //ADICIONA CHEFAO
+                setTimeout(() => {
+                  this.background = new Background(this.ctx);
+                  this.boss1 = new Boss1(this.ctx);
+                  this.song = new Song(5);
+                  chefao.classList.add("invisible");
+                  gameMenu.classList.remove("invisible");
+                  this.start();
+                }, 6000);
+              }
             }
-            this.player.weapon.bullets.splice(bullIndex, 1);
           }
         }
       });
@@ -329,22 +360,52 @@ class Game {
           this.player.strength -= 1;
           this.boss1.weapon.bullets.splice(bullIndex, 1);
           if (this.player.strength <= 0) {
-            this.gameOver();
+            this.explode = new Explode(this.player);
+            this.song.pause();
+            this.song.currentTime = 0;
+            this.explosionSound.play();
+            setTimeout(() => {
+              this.gameOver();
+            }, 5000);
           }
         }
+
+        //COLISÃO BALA CHEFÃO + BALA DO PLAYER
+        this.player.weapon.bullets.forEach((playerbull, playerbullIndex) => {
+          if (playerbull.collide(bull)) {
+            this.boss1.weapon.bullets.splice(bullIndex, 1);
+            this.player.weapon.bullets.splice(playerbullIndex, 1);
+            //new Explode(playerbull, "./images/minhoca.png", 3, 10);
+          }
+        });
       });
 
       //COLISÃO BALAS PLAYER + CHEFÃO 1
       this.player.weapon.bullets.forEach((bull, bullIndex) => {
         const pointsDOM = document.getElementById("points");
+        const wonPage = document.getElementById("you-won");
+        const pointsWon = document.getElementById("points-you-won");
         if (this.boss1.collide(bull)) {
           this.player.weapon.bullets.splice(bullIndex, 1);
+          this.damageSound.play();
           this.boss1.strength -= 10;
           if (this.boss1.strength <= 0) {
+            this.explode = new Explode(this.boss1);
+            this.song.pause();
+            this.song.currentTime = 0;
+            this.explosionSound.play();
             this.points += 150;
             pointsDOM.textContent = this.points;
-            this.boss1 = null;
-            this.stop();
+            pointsWon.textContent = this.points;
+            setTimeout(() => {
+              this.boss1 = null;
+            }, 300);
+            setTimeout(() => {
+              this.stop();
+              this.winningSong.play();
+              gameMenu.classList.add("invisible");
+              wonPage.classList.remove("invisible");
+            }, 5000);
           }
         }
       });

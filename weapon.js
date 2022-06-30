@@ -33,12 +33,12 @@ class Weapon {
             this.ctx,
             this.shooter.y + this.shooter.height / 2,
             this.shooter.x - 10,
-            -5,
+            -6,
             Math.random() < 0.5 ? -4 : 4,
-            "./images/bala-chefao1.png",
+            "./images/bala-chefao2.png",
             40,
             40,
-            7,
+            2,
             true
           )
         );

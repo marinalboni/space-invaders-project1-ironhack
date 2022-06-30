@@ -11,7 +11,7 @@ class Meteor {
     this.img.frameIndex = 0;
     this.tick = 0;
 
-    this.vx = -4;
+    this.vx = -7;
   }
 
   move() {

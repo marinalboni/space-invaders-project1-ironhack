@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Game Project</title>
+    <title>Fry Mr. Potato!</title>
     <link rel="icon" type="image/x-icon" href="/images/et-favicon.png">
     <link rel="stylesheet" href="./style/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,7 +28,7 @@
             </div>
         </div>
         <div id="inicio" class="invisible">
-            <h2 class="title"><span>SPACE INVADERS</span></h1>
+            <h2 class="title"><span>FRY MISTER POTATO!</span></h1>
                 <div class="menu-btns">
                     <button class="menu" id="about-the-game">ABOUT THE GAME</button>
                     <button class="menu" id="how-to-play">HOW TO PLAY</button>
@@ -38,10 +38,10 @@
         <div id="about" class="invisible">
             <h2 class="title">ABOUT THE GAME</h1>
                 <p>
-                    This game was developed by Marina Laporte Böni and it is inspired by the original Space Invaders, created by Tomohiro Nishikado in 1978. <br><br>
+                    This game was developed by Marina Laporte Böni and it is inspired by Space Invaders, created by Tomohiro Nishikado in 1978. <br><br>
                     It was developed as part of my Ironhack Web Development Bootcamp. The technologies used in this game are HTML5, CSS3 and Javascript ES6. All the code was done from scratch. <br><br>
-                    I hope you enjoy playing it as much as I enjoyed working on it. <br>
-                    Feel free to share with your friends :) <br><br>
+                    The music from regular levels was created and produced by Amanda Cuervo, the boss-level song and the you-win song are from FesliyanStudios.com and the menu song (Chopsticks) is from Jorge Hernandez.<br><br> 
+                    I hope you enjoy playing this game as much as I enjoyed working on it.<br><br>
                     Marina Laporte Böni - June, 2022.
                 </p>
                 <button class="menu" id="back-to-menu">GO BACK TO MENU</button>
@@ -62,9 +62,8 @@
                 <p>BUT WATCH OUT!</p>
                 <ul>
                     <li>Enemies will shoot as well - try to dodge their bullets.</li>
-                    <li>The satellite will prevent you from shooting as long as you can see it.</li>
                     <li>Avoid the meteors.</li>
-                    <li>If you see a heart or a bullet icon, try to catch it - they'll help you win.</li>
+                    <li>If you see a heart or a light-saber icon, try to catch it - they'll help you win.</li>
                     <li>Don't let enemies reach your space - you don't want to lose.</li>
                 </ul>   
                 <button class="menu" id="back-to-menu2">GO BACK TO MENU</button>
@@ -78,6 +77,14 @@
                 <img id="gif" src="./images/alien-gif.gif" alt="alien gif">
                 <img id="gif" src="./images/alien-gif.gif" alt="alien gif">
                 <img id="gif" src="./images/alien-gif.gif" alt="alien gif">
+            </div>
+        </div>
+        <div id="chefao" class="invisible">
+            <h2 class="congrats">CONGRATS!</h1>
+            <h3>YOU JUST PASSED LEVEL <span>5</span>!</h3>
+            <h3>GET READY TO FIGHT... MR POTATO!</h3>
+            <div class="gifs">
+                <img id="potato-gif" src="./images/potato-gif.gif" alt="potato gif">
             </div>
         </div>
         <div id="game-over" class="invisible">
@@ -94,8 +101,23 @@
                 </div>
             </div>
         </div>
+        <div id="you-won" class="invisible">
+            <h2 class="congrats">YOU WON!</h1>
+            <h3>MR. POTATO WON'T BOTHER ANYMORE, THE GALAXY IS SAFE.</h3>
+            <h3>You made <span id="points-you-won">x</span> points.</h3>
+            <div class="div-end">
+                <div>
+                    <h3>You can always play again.</h3>
+                    <button class="menu" id="back-to-menu2" onClick="window.location.reload();">PLAY AGAIN</button>
+                </div>
+                <div>
+                    <h3>If you liked this game, please share it with your friends:</h3>
+                    <button class="menu" id="share-btn">SHARE!</button>
+                </div>
+            </div>
+        </div>
         <div id="start-song" class="">
-            <h2 class="title">WELCOME TO MY <br><span>SPACE INVADERS</span></h1>
+            <h2 class="title">WELCOME TO <br><span>FRY MISTER POTATO!</span></h1>
             <button class="menu" id="play-music">I WANT TO PLAY!</button>
         </div>
     </div>
@@ -112,6 +134,7 @@
     <script src="grid.js"></script>
     <script src="enemy.js"></script>
     <script src="boss1.js"></script>
+    <script src="explode.js"></script>
     <script src="particles.js"></script>
     <script src="explosion.js"></script>
     <script src="game.js"></script>
