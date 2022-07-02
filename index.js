@@ -18,7 +18,31 @@ const allBtns = document.querySelectorAll("button");
 const bossLife = document.getElementById("boss-life");
 //SPAN VIDA CHEFAO
 const bossLifeSpan = document.querySelector("#boss-life span");
+//GAME 2
+const game2 = new Game2(ctx);
 
+//GAME2
+
+startBtn.addEventListener("click", () => {
+  if (game2.intervalId === null) {
+    game2.start();
+    startBtn.textContent = "PAUSE";
+  } else {
+    game2.stop();
+    startBtn.textContent = "PLAY";
+  }
+});
+
+playBtn.addEventListener("click", () => {
+  game2.start();
+  startBtn.textContent = "PAUSE";
+  game.menuSound.pause();
+  game.menuSound.currentTime = 0;
+  startMenu.classList.add("invisible");
+  gameMenu.classList.remove("invisible");
+});
+
+//GAME 1
 songBtn.addEventListener("click", () => {
   game.menuSound.play();
   songMenu.classList.add("invisible");
@@ -29,24 +53,24 @@ allBtns.forEach((btn) => {
   btn.addEventListener("mouseover", () => game.hoverSound.play());
 });
 
-startBtn.addEventListener("click", () => {
-  if (game.intervalId === null) {
-    game.start();
-    startBtn.textContent = "PAUSE";
-  } else {
-    game.stop();
-    startBtn.textContent = "PLAY";
-  }
-});
+// startBtn.addEventListener("click", () => {
+//   if (game.intervalId === null) {
+//     game.start();
+//     startBtn.textContent = "PAUSE";
+//   } else {
+//     game.stop();
+//     startBtn.textContent = "PLAY";
+//   }
+// });
 
-playBtn.addEventListener("click", () => {
-  game.start();
-  startBtn.textContent = "PAUSE";
-  game.menuSound.pause();
-  game.menuSound.currentTime = 0;
-  startMenu.classList.add("invisible");
-  gameMenu.classList.remove("invisible");
-});
+// playBtn.addEventListener("click", () => {
+//   game.start();
+//   startBtn.textContent = "PAUSE";
+//   game.menuSound.pause();
+//   game.menuSound.currentTime = 0;
+//   startMenu.classList.add("invisible");
+//   gameMenu.classList.remove("invisible");
+// });
 
 aboutBtn.addEventListener("click", () => {
   aboutMenu.classList.remove("invisible");
