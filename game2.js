@@ -96,6 +96,7 @@ class Game2 {
     this.winningSong.src = "./sounds/final-song.mp3";
     this.song = new Audio();
     this.song.src = "./sounds/infinite-song.mp3";
+    this.song.loop = true;
   }
 
   start() {
