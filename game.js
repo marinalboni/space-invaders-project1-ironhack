@@ -10,7 +10,7 @@ class Game {
         strength: 10,
         canShoot: false,
         velocity: 3,
-        columns: 10,
+        columns: 8,
         rows: 10,
         color: "#04fc04",
       },
@@ -31,7 +31,7 @@ class Game {
         strength: 20,
         canShoot: true,
         velocity: 2,
-        columns: 8,
+        columns: 6,
         rows: 10,
         color: "#ff1cff",
         tickMax: 125,
@@ -42,7 +42,7 @@ class Game {
         strength: 20,
         canShoot: true,
         velocity: 1.5,
-        columns: 6,
+        columns: 7,
         rows: 10,
         color: "#ff6b00",
         tickMax: 100,
@@ -53,7 +53,7 @@ class Game {
         strength: 20,
         canShoot: true,
         velocity: 1.5,
-        columns: 10,
+        columns: 6,
         rows: 10,
         color: "yellow",
         tickMax: 75,
@@ -61,7 +61,7 @@ class Game {
     ];
     this.intervalId = null;
     this.background = new Background(this.ctx, this.levels[this.levelIndex]);
-    this.player = new Player(this.ctx);
+    this.player = new Player(this.ctx, this);
     this.grid = new Grid(this.ctx, this.levels[this.levelIndex]);
     this.explosions = [];
     this.meteors = [];
@@ -91,6 +91,8 @@ class Game {
     this.song = new Song(this.levelIndex);
     this.boss1 = null;
     this.explode = null;
+    this.isHit = false;
+    this.isPlayerHit = false;
   }
 
   start() {
@@ -211,6 +213,7 @@ class Game {
     this.meteors.forEach((meteor, metIndex) => {
       if (meteor.collide(this.player)) {
         this.player.strength = 0;
+        this.isPlayerHit = true;
         lifes.forEach((life) => life.remove());
         this.meteors.splice(metIndex, 1);
         this.explode = new Explode(this.player);
@@ -225,6 +228,7 @@ class Game {
     this.grid.enemies.forEach((enemy, enemyIndex) => {
       if (enemy.collideX(this.player)) {
         this.player.strength = 0;
+        this.isPlayerHit = true;
         this.grid.enemies = [];
         this.explode = new Explode(this.player);
         this.explosionSound.play();
@@ -236,11 +240,13 @@ class Game {
       //GRID INIMIGOS (BALA INIMIGOS + PLAYER)
       enemy.weapon.bullets.forEach((bull, bullIndex) => {
         if (bull.collide(this.player)) {
+          this.isPlayerHit = true;
           this.damageSound.play();
           lifes[lifesLength - 1].remove();
           this.player.strength -= 1;
           enemy.weapon.bullets.splice(bullIndex, 1);
           if (this.player.strength <= 0) {
+            this.isPlayerHit = true;
             this.song.pause();
             this.song.currentTime = 0;
             this.explode = new Explode(this.player);
@@ -338,8 +344,9 @@ class Game {
                 //ADICIONA CHEFAO
                 setTimeout(() => {
                   this.background = new Background(this.ctx);
-                  this.boss1 = new Boss1(this.ctx);
+                  this.boss1 = new Boss1(this.ctx, this);
                   this.song = new Song(5);
+                  bossLife.classList.remove("invisible");
                   chefao.classList.add("invisible");
                   gameMenu.classList.remove("invisible");
                   this.start();
@@ -355,16 +362,19 @@ class Game {
     if (this.boss1) {
       this.boss1.weapon.bullets.forEach((bull, bullIndex) => {
         if (bull.collide(this.player)) {
+          this.isPlayerHit = true;
           this.damageSound.play();
           lifes[lifesLength - 1].remove();
           this.player.strength -= 1;
           this.boss1.weapon.bullets.splice(bullIndex, 1);
           if (this.player.strength <= 0) {
+            this.isPlayerHit = true;
             this.explode = new Explode(this.player);
             this.song.pause();
             this.song.currentTime = 0;
             this.explosionSound.play();
             setTimeout(() => {
+              bossLife.classList.add("invisible");
               this.gameOver();
             }, 5000);
           }
@@ -373,9 +383,7 @@ class Game {
         //COLISÃO BALA CHEFÃO + BALA DO PLAYER
         this.player.weapon.bullets.forEach((playerbull, playerbullIndex) => {
           if (playerbull.collide(bull)) {
-            this.boss1.weapon.bullets.splice(bullIndex, 1);
             this.player.weapon.bullets.splice(playerbullIndex, 1);
-            //new Explode(playerbull, "./images/minhoca.png", 3, 10);
           }
         });
       });
@@ -386,9 +394,13 @@ class Game {
         const wonPage = document.getElementById("you-won");
         const pointsWon = document.getElementById("points-you-won");
         if (this.boss1.collide(bull)) {
+          this.isHit = true;
           this.player.weapon.bullets.splice(bullIndex, 1);
-          this.damageSound.play();
-          this.boss1.strength -= 10;
+          if (this.boss1.strength > 5) {
+            this.boss1.strength -= 10;
+          }
+          bossLifeSpan.textContent = this.boss1.strength;
+          new Explode(bull);
           if (this.boss1.strength <= 0) {
             this.explode = new Explode(this.boss1);
             this.song.pause();
@@ -401,6 +413,7 @@ class Game {
               this.boss1 = null;
             }, 300);
             setTimeout(() => {
+              bossLife.classList.add("invisible");
               this.stop();
               this.winningSong.play();
               gameMenu.classList.add("invisible");

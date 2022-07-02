@@ -6,7 +6,7 @@ class Song {
     this.song3 = new Audio();
     this.song1.src = "./sounds/jogo-nina.wav";
     this.song2.src = "./sounds/fase-2.wav";
-    this.song3.src = "./sounds/musica-chefao.mp3";
+    this.song3.src = "./sounds/musica-chefao2.mp3";
   }
 
   play() {

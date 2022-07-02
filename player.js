@@ -1,12 +1,15 @@
 class Player {
-  constructor(ctx) {
+  constructor(ctx, game) {
     this.ctx = ctx;
+    this.game = game;
     this.width = 50;
     this.height = 70;
     this.x = 50;
     this.y = this.ctx.canvas.height / 2 - this.height / 2;
     this.img = new Image();
     this.img.src = "./images/spaceship.png";
+    this.img2 = new Image();
+    this.img2.src = "./images/spaceship-red.png";
     this.vx = 0;
     this.vy = 0;
     this.strength = 5;
@@ -25,10 +28,15 @@ class Player {
   }
 
   draw() {
+    this.weapon.draw();
+    this.weapon.clearBullets();
     if (this.strength > 0) {
-      this.ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-      this.weapon.draw();
-      this.weapon.clearBullets();
+      if (this.game.isPlayerHit) {
+        this.ctx.drawImage(this.img2, this.x, this.y, this.width, this.height);
+        setTimeout(() => (this.game.isPlayerHit = false), 180);
+      } else {
+        this.ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+      }
     }
   }
 

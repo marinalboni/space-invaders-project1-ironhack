@@ -258,3 +258,15 @@ h3 {
   .div-end h3{
     height: 120px
   }
+
+  #boss-life {
+    color: white;
+    position: absolute;
+    font-size: 50px;
+    top: -20px;
+  }
+
+  #boss-life span {
+    color: red;
+    font-size: 60px;
+  }

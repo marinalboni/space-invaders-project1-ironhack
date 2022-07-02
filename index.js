@@ -14,6 +14,10 @@ const playBtn = document.getElementById("play-game");
 const startMenu = document.getElementById("inicio");
 const gameMenu = document.querySelector(".content");
 const allBtns = document.querySelectorAll("button");
+//VIDA CHEFÃO
+const bossLife = document.getElementById("boss-life");
+//SPAN VIDA CHEFAO
+const bossLifeSpan = document.querySelector("#boss-life span");
 
 songBtn.addEventListener("click", () => {
   game.menuSound.play();
