@@ -4,20 +4,14 @@ class Song {
     this.song1 = new Audio();
     this.song2 = new Audio();
     this.song3 = new Audio();
-    this.song1.src = "./sounds/jogo-nina.wav";
+    this.song1.src = "./sounds/versao2.wav";
     this.song2.src = "./sounds/nfase-2.wav";
     this.song3.src = "./sounds/musica-chefao2.mp3";
   }
 
   play() {
-    if (
-      this.levelIndex === 0 ||
-      this.levelIndex === 2 ||
-      this.levelIndex === 4
-    ) {
+    if (this.levelIndex <= 4) {
       this.song1.play();
-    } else if (this.levelIndex === 1 || this.levelIndex === 3) {
-      this.song2.play();
     } else {
       this.song3.play();
     }
