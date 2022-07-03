@@ -1,8 +1,8 @@
 class BulletBonus {
   constructor(ctx) {
     this.ctx = ctx;
-    this.width = 5;
-    this.height = 50;
+    this.width = 7;
+    this.height = 70;
     this.x = Math.random() * 300;
     this.y = 0 - this.height;
     this.img = new Image();

@@ -72,7 +72,7 @@ class Game2 {
     this.tickMeteor = 0;
     this.tickBonus = 0;
     this.tickBulletBonus = 1250;
-    this.tickAddEnemies = 1000;
+    this.tickAddEnemies = 800;
 
     this.explode = null;
 
@@ -106,7 +106,7 @@ class Game2 {
       this.checkCollisions();
       this.move();
 
-      let randomTickE = Math.floor(Math.random() * 200) + 1000;
+      let randomTickE = Math.floor(Math.random() * 200) + 800;
       this.tickAddEnemies++;
       if (this.tickAddEnemies >= randomTickE) {
         this.tickAddEnemies = 0;
@@ -255,8 +255,8 @@ class Game2 {
             enemy.weapon.bullets.splice(bullIndex, 1);
             this.isPlayerHit = true;
             this.damageSound.play();
-            this.player.strength -= 1;
             lifes[lifesLength - 1].remove();
+            this.player.strength -= 1;
             if (this.player.strength <= 0) {
               this.isPlayerHit = true;
               this.song.pause();
@@ -313,8 +313,8 @@ class Game2 {
   stop() {
     clearInterval(this.intervalId);
     this.intervalId = null;
-    // this.song.pause();
-    // this.song.currentTime = 0;
+    this.song.pause();
+    this.song.currentTime = 0;
   }
 
   gameOver() {

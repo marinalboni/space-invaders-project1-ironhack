@@ -31,7 +31,7 @@ class Game {
         strength: 20,
         canShoot: true,
         velocity: 2,
-        columns: 6,
+        columns: 7,
         rows: 10,
         color: "#ff1cff",
         tickMax: 125,
@@ -50,7 +50,7 @@ class Game {
       {
         img: "./images/enemy5-cropped.png",
         background: "./images/bg5.png",
-        strength: 20,
+        strength: 30,
         canShoot: true,
         velocity: 1.5,
         columns: 6,
@@ -72,16 +72,12 @@ class Game {
     this.tickBulletBonus = 1250;
     this.deadSound = new Audio();
     this.deadSound.src = "./sounds/player-bullet.wav";
-    this.menuSound = new Audio();
-    this.menuSound.src = "./sounds/menu-song-jorge-hernandez-chopsticks.mp3";
     this.lostSound = new Audio();
     this.lostSound.src = "./sounds/lost-song.wav";
     this.gameSound = new Audio();
     this.gameSound.src = "./sounds/fase-2.wav";
     this.winSound = new Audio();
     this.winSound.src = "./sounds/win.wav";
-    this.hoverSound = new Audio();
-    this.hoverSound.src = "./sounds/hover.wav";
     this.damageSound = new Audio();
     this.damageSound.src = "./sounds/damage.wav";
     this.explosionSound = new Audio();
@@ -241,10 +237,10 @@ class Game {
       enemy.weapon.bullets.forEach((bull, bullIndex) => {
         if (bull.collide(this.player)) {
           this.isPlayerHit = true;
+          enemy.weapon.bullets.splice(bullIndex, 1);
           this.damageSound.play();
           lifes[lifesLength - 1].remove();
           this.player.strength -= 1;
-          enemy.weapon.bullets.splice(bullIndex, 1);
           if (this.player.strength <= 0) {
             this.isPlayerHit = true;
             this.song.pause();

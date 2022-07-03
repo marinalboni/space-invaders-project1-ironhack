@@ -30,7 +30,7 @@ body {
 }
 
 .title span {
-    font-size: 140px
+    font-size: 120px
 }
 
 #start-song {
@@ -246,7 +246,7 @@ h3 {
   }
 
   .div-end {
-    margin-top: 150px;
+    margin-top: 50px;
     display: flex;
     justify-content: space-evenly;
   }
@@ -269,4 +269,22 @@ h3 {
   #boss-life span {
     color: red;
     font-size: 60px;
+  }
+
+  #modes-title {
+    color: white;
+    font-size: 80px;
+    margin: 25px auto 0;
+  }
+
+  .modes-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+
+  .mode-text {
+    margin-top: 0;
+    font-size: 25px;
+    width: 360px;
   }

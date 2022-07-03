@@ -24,7 +24,7 @@
                     <img class ="life visibility" src="./images/life.png" alt="life">
                     <img class ="life visibility" src="./images/life.png" alt="life">
                   </div>
-                <p>POINTS: <span id="points">0</span></p>
+                <p> SCORE: <span id="points">0</span></p>
             </div>
         </div>
         <div id="inicio" class="invisible">
@@ -32,7 +32,17 @@
                 <div class="menu-btns">
                     <button class="menu" id="about-the-game">ABOUT THE GAME</button>
                     <button class="menu" id="how-to-play">HOW TO PLAY</button>
-                    <button class="menu" id="play-game">PLAY GAME</button>
+                    <p id="modes-title">GAME MODES</p>
+                    <div class="modes-container">
+                        <div>
+                            <button class="menu" id="levels-mode">LEVELS</button>
+                            <p class="mode-text" id="levels-mode-text">Beat levels and save the galaxy from Mr. Potato.</p>
+                        </div>
+                        <div>
+                            <button class="menu" id="infinite-mode">INFINITE</button>
+                            <p class="mode-text" id="infinite-mode-text">New enemies will appear every few seconds. There is no way of winning so try to beat your highest score.</p>
+                        </div>
+                    </div>
                 </div>
         </div>
         <div id="about" class="invisible">
@@ -40,7 +50,7 @@
                 <p>
                     This game was developed by Marina Laporte Böni and it is inspired by Space Invaders, created by Tomohiro Nishikado in 1978. <br><br>
                     It was developed as part of my Ironhack Web Development Bootcamp. The technologies used in this game are HTML5, CSS3 and Javascript ES6. All the code was done from scratch. <br><br>
-                    The music from regular levels was created and produced by Amanda Cuervo, the boss-level song and the you-win song are from FesliyanStudios.com and the menu song (Chopsticks) is from Jorge Hernandez.<br><br> 
+                    The music from regular levels was created and produced by Amanda Cuervo, the boss-level, the you-win and the infinite mode songs are from FesliyanStudios.com and the menu song (Chopsticks) is from Jorge Hernandez.<br><br> 
                     I hope you enjoy playing this game as much as I enjoyed working on it.<br><br>
                     Marina Laporte Böni - June, 2022.
                 </p>
@@ -71,8 +81,8 @@
         <div id="fase" class="invisible">
             <h2 class="congrats">CONGRATS!</h1>
             <h3>YOU JUST PASSED LEVEL <span id="level-fase">X</span>!</h3>
-            <h3>You have <span id="points-fase">X</span> points</h3>
-            <h3>& <span id="hearts-fase">X</span> hearts left.</h3>
+            <h3>You have <span id="points-fase">X</span> points &</h3>
+            <h3><span id="hearts-fase">X</span> hearts left.</h3>
             <div class="gifs">
                 <img id="gif" src="./images/alien-gif.gif" alt="alien gif">
                 <img id="gif" src="./images/alien-gif.gif" alt="alien gif">
